@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="pl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pracownia Drewna | Grawer i Cięcie Laserowe</title>
+    
+    <!-- Tailwind CSS (wersja CDN dla łatwości użycia) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Konfiguracja kolorów Tailwinda -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        wood: '#8B5A2B',
+                        woodDark: '#6B4226',
+                        allegro: '#FF5A00',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Skrypt zapobiegający mruganiu trybu ciemnego (FOUC) -->
+    <script>
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+
+    <!-- Ikony FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Dodatkowe animacje CSS */
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hover-scale {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hover-scale:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300 font-sans">
+
+    <!-- Nawigacja -->
+    <nav class="fixed w-full z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-sm transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <i class="fa-solid fa-tree text-wood text-2xl"></i>
+                    <span class="font-bold text-xl tracking-tight">Laser<span class="text-wood">Wood</span></span>
+                </div>
+                
+                <!-- Menu Desktop -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#o-mnie" class="hover:text-wood transition-colors">O mnie</a>
+                    <a href="#portfolio" class="hover:text-wood transition-colors">Portfolio</a>
+                    <a href="#kontakt" class="hover:text-wood transition-colors">Kontakt</a>
+                    <a href="https://allegro.pl/uzytkownik/TWÓJ_LOGIN" target="_blank" class="bg-allegro hover:bg-orange-600 text-white px-4 py-2 rounded-full font-medium transition-all shadow-md hover:shadow-lg flex items-center gap-2">
+                        <i class="fa-solid fa-cart-shopping"></i> Sklep Allegro
+                    </a>
+                    
+                    <!-- Przycisk zmiany motywu -->
+                    <button id="theme-toggle" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none rounded-lg text-sm p-2.5 transition-colors">
+                        <i id="theme-toggle-dark-icon" class="fa-solid fa-moon hidden text-lg"></i>
+                        <i id="theme-toggle-light-icon" class="fa-solid fa-sun hidden text-lg"></i>
+                    </button>
+                </div>
+
+                <!-- Przycisk menu mobilnego -->
+                <div class="md:hidden flex items-center gap-4">
+                    <button id="theme-toggle-mobile" class="text-gray-500 dark:text-gray-400 focus:outline-none">
+                        <i class="fa-solid fa-circle-half-stroke text-xl"></i>
+                    </button>
+                    <button id="mobile-menu-btn" class="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Menu Mobilne (ukryte domyślnie) -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-gray-900 border-t dark:border-gray-800">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#o-mnie" class="block px-3 py-2 rounded-md font-medium hover:bg-gray-100 dark:hover:bg-gray-800">O mnie</a>
+                <a href="#portfolio" class="block px-3 py-2 rounded-md font-medium hover:bg-gray-100 dark:hover:bg-gray-800">Portfolio</a>
+                <a href="#kontakt" class="block px-3 py-2 rounded-md font-medium hover:bg-gray-100 dark:hover:bg-gray-800">Kontakt</a>
+                <a href="https://allegro.pl/uzytkownik/TWÓJ_LOGIN" target="_blank" class="block px-3 py-2 rounded-md font-medium bg-allegro text-white mt-4 text-center">
+                    Przejdź do Allegro
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sekcja Hero -->
+    <section class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12 fade-in">
+        <div class="flex-1 space-y-6 text-center md:text-left">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">
+                Precyzja ukryta w <span class="text-wood">strukturze drewna</span>
+            </h1>
+            <p class="text-lg md:text-xl text-gray-600 dark:text-gray-300">
+                Zajmuję się profesjonalnym wypalaniem i grawerowaniem laserowym. Tworzę unikalne dekoracje, prezenty i personalizowane gadżety z pasją do detali.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start pt-4">
+                <a href="#portfolio" class="bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-8 py-3 rounded-full font-bold hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors text-center">
+                    Zobacz moje prace
+                </a>
+                <a href="https://allegro.pl/uzytkownik/TWÓJ_LOGIN" target="_blank" class="bg-allegro hover:bg-orange-600 text-white px-8 py-3 rounded-full font-bold transition-colors flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-cart-shopping"></i> Kup na Allegro
+                </a>
+            </div>
+        </div>
+        <div class="flex-1 relative">
+            <div class="absolute inset-0 bg-wood opacity-20 rounded-full blur-3xl"></div>
+            <!-- Główne zdjęcie (Zmień SRC na własne) -->
+            <img src="https://placehold.co/600x600/292524/e7e5e4?text=Zdjecie+Glowne+Maszyny/Drewna" alt="Grawerowanie drewna" class="relative rounded-2xl shadow-2xl hover-scale object-cover w-full aspect-square">
+        </div>
+    </section>
+
+    <!-- O mnie / Usługi -->
+    <section id="o-mnie" class="py-20 bg-white dark:bg-gray-800 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">Co mogę dla Ciebie stworzyć?</h2>
+                <div class="h-1 w-20 bg-wood mx-auto rounded"></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Karta 1 -->
+                <div class="bg-gray-50 dark:bg-gray-700 p-8 rounded-2xl text-center hover-scale">
+                    <div class="w-16 h-16 bg-wood/10 text-wood rounded-full flex items-center justify-center text-2xl mx-auto mb-6">
+                        <i class="fa-solid fa-fire"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Wypalanie Laserowe</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Precyzyjne wycinanie skomplikowanych kształtów w sklejce, drewnie i innych materiałach.</p>
+                </div>
+                <!-- Karta 2 -->
+                <div class="bg-gray-50 dark:bg-gray-700 p-8 rounded-2xl text-center hover-scale">
+                    <div class="w-16 h-16 bg-wood/10 text-wood rounded-full flex items-center justify-center text-2xl mx-auto mb-6">
+                        <i class="fa-solid fa-pen-nib"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Grawerowanie</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Personalizowane dedykacje, logotypy firmowe i portrety grawerowane bezpośrednio na drewnie.</p>
+                </div>
+                <!-- Karta 3 -->
+                <div class="bg-gray-50 dark:bg-gray-700 p-8 rounded-2xl text-center hover-scale">
+                    <div class="w-16 h-16 bg-wood/10 text-wood rounded-full flex items-center justify-center text-2xl mx-auto mb-6">
+                        <i class="fa-solid fa-gift"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Projekty na wymiar</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Realizuję indywidualne zamówienia i pomysły klientów od projektu po gotowy produkt.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio -->
+    <section id="portfolio" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold mb-4">Moje Realizacje</h2>
+            <div class="h-1 w-20 bg-wood mx-auto rounded mb-6"></div>
+            <p class="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">Zobacz wybrane projekty, które opuściły moją pracownię. Wszystkie te rzeczy (oraz wiele więcej) znajdziesz na moim koncie Allegro.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Projekt 1 -->
+            <div class="group relative overflow-hidden rounded-2xl hover-scale bg-white dark:bg-gray-800 shadow-sm">
+                <img src="https://placehold.co/600x400/292524/e7e5e4?text=Zdjecie+Projektu+1" alt="Projekt 1" class="w-full h-64 object-cover transition duration-300 group-hover:scale-110">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                    <h3 class="text-white font-bold text-xl">Podkładka pod kubek</h3>
+                    <p class="text-gray-200 text-sm">Grawerowana sklejka 3mm</p>
+                </div>
+            </div>
+            
+            <!-- Projekt 2 -->
+            <div class="group relative overflow-hidden rounded-2xl hover-scale bg-white dark:bg-gray-800 shadow-sm">
+                <img src="https://placehold.co/600x400/292524/e7e5e4?text=Zdjecie+Projektu+2" alt="Projekt 2" class="w-full h-64 object-cover transition duration-300 group-hover:scale-110">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                    <h3 class="text-white font-bold text-xl">Pudełko na wino</h3>
+                    <p class="text-gray-200 text-sm">Personalizowany grawer ślubny</p>
+                </div>
+            </div>
+
+            <!-- Projekt 3 -->
+            <div class="group relative overflow-hidden rounded-2xl hover-scale bg-white dark:bg-gray-800 shadow-sm">
+                <img src="https://placehold.co/600x400/292524/e7e5e4?text=Zdjecie+Projektu+3" alt="Projekt 3" class="w-full h-64 object-cover transition duration-300 group-hover:scale-110">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                    <h3 class="text-white font-bold text-xl">Zegar ścienny</h3>
+                    <p class="text-gray-200 text-sm">Drewno dębowe z ażurowym wzorem</p>
+                </div>
+            </div>
+
+            <!-- Projekt 4 -->
+            <div class="group relative overflow-hidden rounded-2xl hover-scale bg-white dark:bg-gray-800 shadow-sm">
+                <img src="https://placehold.co/600x400/292524/e7e5e4?text=Zdjecie+Projektu+4" alt="Projekt 4" class="w-full h-64 object-cover transition duration-300 group-hover:scale-110">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                    <h3 class="text-white font-bold text-xl">Statuetka okolicznościowa</h3>
+                    <p class="text-gray-200 text-sm">Cięcie i grawerowanie</p>
+                </div>
+            </div>
+
+            <!-- Projekt 5 -->
+            <div class="group relative overflow-hidden rounded-2xl hover-scale bg-white dark:bg-gray-800 shadow-sm">
+                <img src="https://placehold.co/600x400/292524/e7e5e4?text=Zdjecie+Projektu+5" alt="Projekt 5" class="w-full h-64 object-cover transition duration-300 group-hover:scale-110">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                    <h3 class="text-white font-bold text-xl">Ozdoby świąteczne</h3>
+                    <p class="text-gray-200 text-sm">Zestaw bombek drewnianych</p>
+                </div>
+            </div>
+
+            <!-- Projekt 6 -->
+            <div class="group relative overflow-hidden rounded-2xl hover-scale bg-white dark:bg-gray-800 shadow-sm">
+                <img src="https://placehold.co/600x400/292524/e7e5e4?text=Zdjecie+Projektu+6" alt="Projekt 6" class="w-full h-64 object-cover transition duration-300 group-hover:scale-110">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                    <h3 class="text-white font-bold text-xl">Breloki do kluczy</h3>
+                    <p class="text-gray-200 text-sm">Z logo firmy klienta</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-12 text-center">
+            <a href="https://allegro.pl/uzytkownik/TWÓJ_LOGIN" target="_blank" class="inline-flex items-center gap-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-6 py-3 rounded-full font-bold transition-colors">
+                Zobacz pełną ofertę na Allegro <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Kontakt & Footer -->
+    <footer id="kontakt" class="bg-gray-900 text-white pt-16 pb-8 border-t-4 border-wood">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-12">
+                
+                <!-- O firmie -->
+                <div>
+                    <div class="flex items-center gap-2 mb-6">
+                        <i class="fa-solid fa-tree text-wood text-2xl"></i>
+                        <span class="font-bold text-xl tracking-tight">Laser<span class="text-wood">Wood</span></span>
+                    </div>
+                    <p class="text-gray-400 mb-6">
+                        Twoje pomysły wypalone w drewnie. Zajmuję się realizacją gotowych wzorów oraz indywidualnych projektów na zamówienie.
+                    </p>
+                </div>
+
+                <!-- Dane kontaktowe -->
+                <div>
+                    <h3 class="text-xl font-bold mb-6">Kontakt</h3>
+                    <ul class="space-y-4 text-gray-400">
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-envelope text-wood"></i>
+                            <a href="mailto:kontakt@twojadomena.pl" class="hover:text-white transition-colors">kontakt@twojadomena.pl</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-phone text-wood"></i>
+                            <a href="tel:+48123456789" class="hover:text-white transition-colors">+48 123 456 789</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-location-dot text-wood"></i>
+                            <span>Warszawa, Polska (Wysyłka na cały kraj)</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Allegro i Social Media -->
+                <div>
+                    <h3 class="text-xl font-bold mb-6">Gdzie kupić?</h3>
+                    <p class="text-gray-400 mb-4">Wszystkie moje produkty znajdziesz i bezpiecznie kupisz na Allegro.</p>
+                    <a href="https://allegro.pl/uzytkownik/TWÓJ_LOGIN" target="_blank" class="bg-allegro hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-bold transition-colors inline-flex items-center gap-2 w-full justify-center mb-6">
+                        <i class="fa-solid fa-cart-shopping"></i> Mój Sklep Allegro
+                    </a>
+                    
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-pink-600 transition-colors">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
+                <p>&copy; <span id="year"></span> LaserWood. Wszelkie prawa zastrzeżone.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Skrypty operacyjne (Dark mode, Menu) -->
+    <script>
+        // Aktualizacja roku w stopce
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Obsługa trybu ciemnego (ikony)
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeToggleMobileBtn = document.getElementById('theme-toggle-mobile');
+        const darkIcon = document.getElementById('theme-toggle-dark-icon');
+        const lightIcon = document.getElementById('theme-toggle-light-icon');
+
+        function updateIcons() {
+            if (document.documentElement.classList.contains('dark')) {
+                darkIcon.classList.remove('hidden');
+                lightIcon.classList.add('hidden');
+            } else {
+                lightIcon.classList.remove('hidden');
+                darkIcon.classList.add('hidden');
+            }
+        }
+        updateIcons();
+
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            }
+            updateIcons();
+        }
+
+        themeToggleBtn.addEventListener('click', toggleTheme);
+        themeToggleMobileBtn.addEventListener('click', toggleTheme);
+
+        // Obsługa menu mobilnego
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Ukryj menu mobilne po kliknięciu w link
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pracownia Drewna | Grawer i Cięcie Laserowe</title>
     
+    <!-- Tailwind CSS (wersja CDN dla łatwości użycia) -->
     <script src="https://cdn.tailwindcss.com"></script>
     
+    <!-- Konfiguracja kolorów Tailwinda -->
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -22,6 +24,7 @@
         }
     </script>
 
+    <!-- Skrypt zapobiegający mruganiu trybu ciemnego (FOUC) -->
     <script>
         if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
@@ -30,6 +33,7 @@
         }
     </script>
 
+    <!-- Ikony FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
@@ -48,115 +52,11 @@
             transform: translateY(-5px) scale(1.02);
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
         }
-
-        /* --- ANIMACJA LASERA --- */
-        .wood-board {
-            /* Kolor i tekstura symulująca drewno */
-            background-color: #e5c099;
-            background-image: 
-                radial-gradient(circle at center, transparent 0, rgba(139, 90, 43, 0.2) 100%),
-                repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(139, 90, 43, 0.1) 3px, rgba(139, 90, 43, 0.1) 8px);
-            box-shadow: inset 0 0 30px rgba(92, 58, 33, 0.6);
-        }
-
-        .engrave-wrapper {
-            position: relative;
-            display: inline-block;
-            font-family: 'Courier New', Courier, monospace; /* Techniczny, grawerowany font */
-        }
-
-        .engrave-reveal {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            overflow: hidden;
-            white-space: nowrap;
-            /* Styl przypalenia drewna */
-            color: #2b1704;
-            text-shadow: -1px -1px 2px rgba(0,0,0,0.8), 1px 1px 1px rgba(255,255,255,0.2);
-            animation: typing 4s steps(30, end) infinite;
-        }
-
-        /* Promień lasera (pionowa kreska) */
-        .laser-beam {
-            position: absolute;
-            right: 0;
-            top: -20%;
-            height: 140%;
-            width: 2px;
-            background: #ffffff;
-            box-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000;
-            animation: laserFlicker 0.1s infinite;
-        }
-
-        /* Iskry */
-        .laser-spark {
-            position: absolute;
-            right: -2px;
-            top: 50%;
-            width: 5px;
-            height: 5px;
-            background: #ffea00;
-            border-radius: 50%;
-            box-shadow: 0 0 10px #ffea00, 0 0 20px #ff8800;
-            animation: sparksFly 0.4s infinite linear;
-        }
-
-        /* Dym */
-        .smoke {
-            position: absolute;
-            right: -10px;
-            top: 0;
-            width: 20px;
-            height: 20px;
-            background: rgba(150, 150, 150, 0.3);
-            border-radius: 50%;
-            filter: blur(5px);
-            animation: smokeRise 1.2s infinite ease-out;
-        }
-
-        /* Grupa sterująca widocznością efektów (laser wyłącza się gdy skończy "pisać") */
-        .laser-active-group {
-            position: absolute;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            animation: laserVisibility 4s infinite;
-        }
-
-        /* Klatki kluczowe (Keyframes) */
-        @keyframes typing {
-            0%, 15% { width: 0; }
-            75%, 90% { width: 100%; }
-            100% { width: 0; } /* Reset animacji */
-        }
-
-        @keyframes laserFlicker {
-            0% { opacity: 0.7; width: 1px; }
-            50% { opacity: 1; width: 3px; }
-            100% { opacity: 0.9; width: 2px; }
-        }
-
-        @keyframes sparksFly {
-            0% { transform: translate(0, 0) scale(1); opacity: 1; }
-            100% { transform: translate(20px, -25px) scale(0); opacity: 0; }
-        }
-
-        @keyframes smokeRise {
-            0% { transform: translate(0, 0) scale(1); opacity: 0.8; }
-            100% { transform: translate(-15px, -40px) scale(3); opacity: 0; }
-        }
-
-        @keyframes laserVisibility {
-            0%, 14% { opacity: 0; }
-            15%, 75% { opacity: 1; }
-            76%, 100% { opacity: 0; }
-        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300 font-sans">
 
+    <!-- Nawigacja -->
     <nav class="fixed w-full z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-sm transition-colors duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
@@ -165,6 +65,7 @@
                     <span class="font-bold text-xl tracking-tight">Laser<span class="text-wood">Wood</span></span>
                 </div>
                 
+                <!-- Menu Desktop -->
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="#o-mnie" class="hover:text-wood transition-colors">O mnie</a>
                     <a href="#portfolio" class="hover:text-wood transition-colors">Portfolio</a>
@@ -173,12 +74,14 @@
                         <i class="fa-solid fa-cart-shopping"></i> Sklep Allegro
                     </a>
                     
+                    <!-- Przycisk zmiany motywu -->
                     <button id="theme-toggle" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none rounded-lg text-sm p-2.5 transition-colors">
                         <i id="theme-toggle-dark-icon" class="fa-solid fa-moon hidden text-lg"></i>
                         <i id="theme-toggle-light-icon" class="fa-solid fa-sun hidden text-lg"></i>
                     </button>
                 </div>
 
+                <!-- Przycisk menu mobilnego -->
                 <div class="md:hidden flex items-center gap-4">
                     <button id="theme-toggle-mobile" class="text-gray-500 dark:text-gray-400 focus:outline-none">
                         <i class="fa-solid fa-circle-half-stroke text-xl"></i>
@@ -190,6 +93,7 @@
             </div>
         </div>
         
+        <!-- Menu Mobilne (ukryte domyślnie) -->
         <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-gray-900 border-t dark:border-gray-800">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 <a href="#o-mnie" class="block px-3 py-2 rounded-md font-medium hover:bg-gray-100 dark:hover:bg-gray-800">O mnie</a>
@@ -202,6 +106,7 @@
         </div>
     </nav>
 
+    <!-- Sekcja Hero -->
     <section class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12 fade-in">
         <div class="flex-1 space-y-6 text-center md:text-left">
             <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">
@@ -219,30 +124,14 @@
                 </a>
             </div>
         </div>
-        
-        <div class="flex-1 relative w-full flex justify-center">
+        <div class="flex-1 relative">
             <div class="absolute inset-0 bg-wood opacity-20 rounded-full blur-3xl"></div>
-            
-            <div class="relative w-full max-w-md aspect-square md:aspect-video wood-board rounded-lg shadow-2xl overflow-hidden flex items-center justify-center hover-scale border-4 border-woodDark/30">
-                
-                <div class="engrave-wrapper text-3xl sm:text-4xl md:text-5xl font-bold tracking-widest px-2">
-                    <span class="text-transparent opacity-0 select-none">LASERWOOD</span>
-                    
-                    <div class="engrave-reveal flex items-center">
-                        LASERWOOD
-                        
-                        <div class="laser-active-group">
-                            <div class="laser-beam"></div>
-                            <div class="laser-spark"></div>
-                            <div class="smoke"></div>
-                        </div>
-                    </div>
-                </div>
-                
-            </div>
+            <!-- Główne zdjęcie (Zmień SRC na własne) -->
+            <img src="main-img.png" alt="Grawerowanie drewna" class="relative rounded-2xl shadow-2xl hover-scale object-cover w-full aspect-square">
         </div>
     </section>
 
+    <!-- O mnie / Usługi -->
     <section id="o-mnie" class="py-20 bg-white dark:bg-gray-800 transition-colors">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
@@ -250,6 +139,7 @@
                 <div class="h-1 w-20 bg-wood mx-auto rounded"></div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Karta 1 -->
                 <div class="bg-gray-50 dark:bg-gray-700 p-8 rounded-2xl text-center hover-scale">
                     <div class="w-16 h-16 bg-wood/10 text-wood rounded-full flex items-center justify-center text-2xl mx-auto mb-6">
                         <i class="fa-solid fa-fire"></i>
@@ -257,6 +147,7 @@
                     <h3 class="text-xl font-bold mb-3">Wypalanie Laserowe</h3>
                     <p class="text-gray-600 dark:text-gray-300">Precyzyjne wycinanie skomplikowanych kształtów w sklejce, drewnie i innych materiałach.</p>
                 </div>
+                <!-- Karta 2 -->
                 <div class="bg-gray-50 dark:bg-gray-700 p-8 rounded-2xl text-center hover-scale">
                     <div class="w-16 h-16 bg-wood/10 text-wood rounded-full flex items-center justify-center text-2xl mx-auto mb-6">
                         <i class="fa-solid fa-pen-nib"></i>
@@ -264,6 +155,7 @@
                     <h3 class="text-xl font-bold mb-3">Grawerowanie</h3>
                     <p class="text-gray-600 dark:text-gray-300">Personalizowane dedykacje, logotypy firmowe i portrety grawerowane bezpośrednio na drewnie.</p>
                 </div>
+                <!-- Karta 3 -->
                 <div class="bg-gray-50 dark:bg-gray-700 p-8 rounded-2xl text-center hover-scale">
                     <div class="w-16 h-16 bg-wood/10 text-wood rounded-full flex items-center justify-center text-2xl mx-auto mb-6">
                         <i class="fa-solid fa-gift"></i>
@@ -275,6 +167,7 @@
         </div>
     </section>
 
+    <!-- Portfolio -->
     <section id="portfolio" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div class="text-center mb-16">
             <h2 class="text-3xl font-bold mb-4">Moje Realizacje</h2>
@@ -283,6 +176,7 @@
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Projekt 1 -->
             <div class="group relative overflow-hidden rounded-2xl hover-scale bg-white dark:bg-gray-800 shadow-sm">
                 <img src="https://placehold.co/600x400/292524/e7e5e4?text=Zdjecie+Projektu+1" alt="Projekt 1" class="w-full h-64 object-cover transition duration-300 group-hover:scale-110">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
@@ -291,6 +185,7 @@
                 </div>
             </div>
             
+            <!-- Projekt 2 -->
             <div class="group relative overflow-hidden rounded-2xl hover-scale bg-white dark:bg-gray-800 shadow-sm">
                 <img src="https://placehold.co/600x400/292524/e7e5e4?text=Zdjecie+Projektu+2" alt="Projekt 2" class="w-full h-64 object-cover transition duration-300 group-hover:scale-110">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
@@ -299,6 +194,7 @@
                 </div>
             </div>
 
+            <!-- Projekt 3 -->
             <div class="group relative overflow-hidden rounded-2xl hover-scale bg-white dark:bg-gray-800 shadow-sm">
                 <img src="https://placehold.co/600x400/292524/e7e5e4?text=Zdjecie+Projektu+3" alt="Projekt 3" class="w-full h-64 object-cover transition duration-300 group-hover:scale-110">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
@@ -307,6 +203,7 @@
                 </div>
             </div>
 
+            <!-- Projekt 4 -->
             <div class="group relative overflow-hidden rounded-2xl hover-scale bg-white dark:bg-gray-800 shadow-sm">
                 <img src="https://placehold.co/600x400/292524/e7e5e4?text=Zdjecie+Projektu+4" alt="Projekt 4" class="w-full h-64 object-cover transition duration-300 group-hover:scale-110">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
@@ -315,6 +212,7 @@
                 </div>
             </div>
 
+            <!-- Projekt 5 -->
             <div class="group relative overflow-hidden rounded-2xl hover-scale bg-white dark:bg-gray-800 shadow-sm">
                 <img src="https://placehold.co/600x400/292524/e7e5e4?text=Zdjecie+Projektu+5" alt="Projekt 5" class="w-full h-64 object-cover transition duration-300 group-hover:scale-110">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
@@ -323,6 +221,7 @@
                 </div>
             </div>
 
+            <!-- Projekt 6 -->
             <div class="group relative overflow-hidden rounded-2xl hover-scale bg-white dark:bg-gray-800 shadow-sm">
                 <img src="https://placehold.co/600x400/292524/e7e5e4?text=Zdjecie+Projektu+6" alt="Projekt 6" class="w-full h-64 object-cover transition duration-300 group-hover:scale-110">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
@@ -339,10 +238,12 @@
         </div>
     </section>
 
+    <!-- Kontakt & Footer -->
     <footer id="kontakt" class="bg-gray-900 text-white pt-16 pb-8 border-t-4 border-wood">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-12">
                 
+                <!-- O firmie -->
                 <div>
                     <div class="flex items-center gap-2 mb-6">
                         <i class="fa-solid fa-tree text-wood text-2xl"></i>
@@ -353,6 +254,7 @@
                     </p>
                 </div>
 
+                <!-- Dane kontaktowe -->
                 <div>
                     <h3 class="text-xl font-bold mb-6">Kontakt</h3>
                     <ul class="space-y-4 text-gray-400">
@@ -371,6 +273,7 @@
                     </ul>
                 </div>
 
+                <!-- Allegro i Social Media -->
                 <div>
                     <h3 class="text-xl font-bold mb-6">Gdzie kupić?</h3>
                     <p class="text-gray-400 mb-4">Wszystkie moje produkty znajdziesz i bezpiecznie kupisz na Allegro.</p>
@@ -395,6 +298,7 @@
         </div>
     </footer>
 
+    <!-- Skrypty operacyjne (Dark mode, Menu) -->
     <script>
         // Aktualizacja roku w stopce
         document.getElementById('year').textContent = new Date().getFullYear();

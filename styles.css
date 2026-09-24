@@ -391,3 +391,14 @@ a.contact-card:hover{ transform: translateY(-3px); border-color: var(--accent); 
 .obrot{
   transform: rotate(90deg);
 }
+
+/* Wymuszenie nieprzezroczystego tła menu mobilnego */
+@media (max-width: 760px){
+  .nav-links{
+    background: var(--surface) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: 0 16px 32px -12px rgba(0,0,0,0.35) !important;
+    z-index: 150 !important;
+  }
+}

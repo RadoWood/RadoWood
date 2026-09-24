@@ -1,354 +1,505 @@
 <!DOCTYPE html>
-<html lang="pl" class="scroll-smooth">
+<html lang="pl" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pracownia Drewna | Grawer i Cięcie Laserowe</title>
-    
-    <!-- Tailwind CSS (wersja CDN dla łatwości użycia) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Konfiguracja kolorów Tailwinda -->
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        wood: '#8B5A2B',
-                        woodDark: '#6B4226',
-                        allegro: '#FF5A00',
-                    }
-                }
-            }
-        }
-    </script>
-
-    <!-- Skrypt zapobiegający mruganiu trybu ciemnego (FOUC) -->
-    <script>
-        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
-    </script>
-
-    <!-- Ikony FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <style>
-        /* Dodatkowe animacje CSS */
-        .fade-in {
-            animation: fadeIn 1s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .hover-scale {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .hover-scale:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laserownia — Grawerowanie i wypalanie laserowe w drewnie</title>
+<meta name="description" content="Personalizowane grawerowanie i wycinanie laserowe w drewnie — tabliczki, ozdoby i prezenty na zamówienie. Zobacz portfolio lub sprawdź na facebook i zobacz pełną ofertę.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23241C16'/%3E%3Cline x1='7' y1='25' x2='25' y2='7' stroke='%23E8481C' stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='23' cy='9' r='3' fill='%23E8481C'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300 font-sans">
+<body>
 
-    <!-- Nawigacja -->
-    <nav class="fixed w-full z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-sm transition-colors duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
-                    <i class="fa-solid fa-tree text-wood text-2xl"></i>
-                    <span class="font-bold text-xl tracking-tight">Rado<span class="text-wood">Wood</span></span>
-                </div>
-                
-                <!-- Menu Desktop -->
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#o-mnie" class="hover:text-wood transition-colors">O mnie</a>
-                    <a href="#portfolio" class="hover:text-wood transition-colors">Portfolio</a>
-                    <a href="#kontakt" class="hover:text-wood transition-colors">Kontakt</a>
-                    <a href="https://allegro.pl/uzytkownik/TWÓJ_LOGIN" target="_blank" class="bg-allegro hover:bg-orange-600 text-white px-4 py-2 rounded-full font-medium transition-all shadow-md hover:shadow-lg flex items-center gap-2">
-                        <i class="fa-solid fa-cart-shopping"></i> Sklep Allegro
-                    </a>
-                    
-                    <!-- Przycisk zmiany motywu -->
-                    <button id="theme-toggle" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none rounded-lg text-sm p-2.5 transition-colors">
-                        <i id="theme-toggle-dark-icon" class="fa-solid fa-moon hidden text-lg"></i>
-                        <i id="theme-toggle-light-icon" class="fa-solid fa-sun hidden text-lg"></i>
-                    </button>
-                </div>
+<a class="skip-link" href="#glowna-tresc">Przejdź do treści</a>
 
-                <!-- Przycisk menu mobilnego -->
-                <div class="md:hidden flex items-center gap-4">
-                    <button id="theme-toggle-mobile" class="text-gray-500 dark:text-gray-400 focus:outline-none">
-                        <i class="fa-solid fa-circle-half-stroke text-xl"></i>
-                    </button>
-                    <button id="mobile-menu-btn" class="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline-none">
-                        <i class="fa-solid fa-bars text-2xl"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Menu Mobilne (ukryte domyślnie) -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-gray-900 border-t dark:border-gray-800">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="#o-mnie" class="block px-3 py-2 rounded-md font-medium hover:bg-gray-100 dark:hover:bg-gray-800">O mnie</a>
-                <a href="#portfolio" class="block px-3 py-2 rounded-md font-medium hover:bg-gray-100 dark:hover:bg-gray-800">Portfolio</a>
-                <a href="#kontakt" class="block px-3 py-2 rounded-md font-medium hover:bg-gray-100 dark:hover:bg-gray-800">Kontakt</a>
-                <a href="https://allegro.pl/uzytkownik/TWÓJ_LOGIN" target="_blank" class="block px-3 py-2 rounded-md font-medium bg-allegro text-white mt-4 text-center">
-                    Przejdź do Allegro
-                </a>
-            </div>
-        </div>
+<!-- ============ NAGŁÓWEK ============ -->
+<header class="site-header" id="top">
+  <div class="nav-inner">
+    <a href="#top" class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" width="30" height="30">
+          <rect width="32" height="32" rx="7" class="mark-bg"/>
+          <image href="Wizytówka laser.jpg" x="0" y="0" width="32" height="32" class="mark-beam"/>
+
+
+            </svg>
+      </span>
+      <span class="brand-name">RadoWood</span>
+    </a>
+
+    <nav class="nav-links" id="navLinks" aria-label="Menu główne">
+      <a href="#o-pracowni" class="nav-link">O pracowni</a>
+      <a href="#portfolio" class="nav-link">Portfolio</a>
+      <a href="#jak-to-dziala" class="nav-link">Jak to działa</a>
+      <a href="#kontakt" class="nav-link">Kontakt</a>
+      <a href="https://www.facebook.com/profile.php?id=61592488697568" target="_blank" rel="noopener" class="btn btn-accent btn-sm nav-cta-mobile">Facebook</a>
     </nav>
 
-    <!-- Sekcja Hero -->
-    <section class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12 fade-in">
-        <div class="flex-1 space-y-6 text-center md:text-left">
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">
-                Precyzja ukryta w <span class="text-wood">strukturze drewna</span>
-            </h1>
-            <p class="text-lg md:text-xl text-gray-600 dark:text-gray-300">
-                Zajmuję się wypalaniem i grawerowaniem laserowym. Tworzę unikalne dekoracje, prezenty i personalizowane gadżety dopasowane pod klienta. Mogę również wygrawerować dla Ciebie szkło, akryl czy skórę.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start pt-4">
-                <a href="#portfolio" class="bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-8 py-3 rounded-full font-bold hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors text-center">
-                    Zobacz moje prace
-                </a>
-                <a href="https://allegro.pl/uzytkownik/TWÓJ_LOGIN" target="_blank" class="bg-allegro hover:bg-orange-600 text-white px-8 py-3 rounded-full font-bold transition-colors flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-cart-shopping"></i> Kup na Allegro
-                </a>
-            </div>
+    <div class="nav-actions">
+      <a href="https://www.facebook.com/profile.php?id=61592488697568" target="_blank" rel="noopener" class="btn btn-accent btn-sm nav-cta">Facebook</a>
+
+      <button id="themeToggle" class="icon-btn" type="button" aria-label="Przełącz na tryb ciemny" aria-pressed="false">
+        <svg class="icon-sun" width="19" height="19" viewBox="0 0 24 24" aria-hidden="true">
+          <circle class="sun-core" cx="12" cy="12" r="4.2"/>
+          <g class="sun-rays">
+            <line x1="12" y1="1.5" x2="12" y2="4.2"/>
+            <line x1="12" y1="19.8" x2="12" y2="22.5"/>
+            <line x1="1.5" y1="12" x2="4.2" y2="12"/>
+            <line x1="19.8" y1="12" x2="22.5" y2="12"/>
+            <line x1="4.5" y1="4.5" x2="6.4" y2="6.4"/>
+            <line x1="17.6" y1="17.6" x2="19.5" y2="19.5"/>
+            <line x1="4.5" y1="19.5" x2="6.4" y2="17.6"/>
+            <line x1="17.6" y1="6.4" x2="19.5" y2="4.5"/>
+          </g>
+          <path class="moon-shape" d="M20 14.8 A8.2 8.2 0 1 1 9.2 3.8 A6.6 6.6 0 0 0 20 14.8 Z"/>
+        </svg>
+      </button>
+
+      <button id="menuToggle" class="icon-btn menu-toggle" type="button" aria-label="Otwórz menu" aria-expanded="false" aria-controls="navLinks">
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="glowna-tresc">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-copy reveal">
+        <p class="eyebrow">Cięcie i grawerowanie laserowe · dopasowane pod klienta</p>
+        <h1 class="hero-title">Wypalam w&nbsp;drewnie to, co&nbsp;chcesz zapamiętać.</h1>
+        <p class="hero-sub">Grawerowanie i wycinanie laserowe — tabliczki, ozdoby i prezenty robione na zamówienie</p>
+        <div class="hero-actions">
+          <a href="#portfolio" class="btn btn-primary">Zobacz portfolio</a>
+          <a href="https://www.facebook.com/profile.php?id=61592488697568" target="_blank" rel="noopener" class="btn btn-accent">Odwiedź Facebook</a>
         </div>
-        <div class="flex-1 relative">
-            <div class="absolute inset-0 bg-wood opacity-20 rounded-full blur-3xl"></div>
-            <!-- Główne zdjęcie (Zmień SRC na własne) -->
-            <img src="main-img.png" alt="Grawerowanie drewna" class="relative rounded-2xl shadow-2xl hover-scale object-cover w-full aspect-square">
+        <p class="trust-strip">Wzory na indywidualne zamówienie &nbsp;</p>
+      </div>
+
+      <div class="hero-visual reveal">
+  <img class="hero-photo" src="main.jpg" alt="Drewniana tabliczka wypalana laserem w pracowni">
+</div>
+    </div>
+        <div class="marquee-track">
+        <span>AKRYL</span><span>·</span><span>BRZOZA</span><span>·</span><span>CERAMIKA</span><span>·</span><span>MDF</span><span>·</span><span>PLASTIK</span><span>·</span><span>SKLEJKA</span><span>·</span><span>SKÓRA</span><span>·</span><span>SZKŁO</span>
+        <span>AKRYL</span><span>·</span><span>BRZOZA</span><span>·</span><span>CERAMIKA</span><span>·</span><span>MDF</span><span>·</span><span>PLASTIK</span><span>·</span><span>SKLEJKA</span><span>·</span><span>SKÓRA</span><span>·</span><span>SZKŁO</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ O PRACOWNI / USŁUGI ============ -->
+  <section class="section" id="o-pracowni">
+    <div class="section-inner">
+      <div class="section-head reveal">
+        <p class="eyebrow">O pracowni</p>
+        <h2>Co wychodzi spod lasera</h2>
+        <p class="section-lead">Od pomysłu po gotowy produkt. Każdy projekt od samego początku prowadzę i wykonuję z największą starannością, tak aby efekt końcowy wywołał uśmiech na Twojej twarzy.</p>
+      </div>
+
+      <div class="card-grid">
+        <article class="card reveal">
+          <span class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 40 40"><rect x="6" y="6" width="28" height="28" class="ic-frame"/><path d="M13 26 L20 14 L27 26" class="ic-line"/><line x1="13" y1="26" x2="27" y2="26" class="ic-line"/></svg>
+          </span>
+          <h3>Grawerowanie</h3>
+          <p>Wypalanie liter, wzorów i logo bezpośrednio na powierzchni drewna, szkła, plastiku, ceramiki czy skóry.</p>
+        </article>
+
+        <article class="card reveal">
+          <span class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 40 40"><path d="M20 6 L34 20 L20 34 L6 20 Z" class="ic-frame"/><path d="M20 14 L26 20 L20 26 L14 20 Z" class="ic-line"/></svg>
+          </span>
+          <h3>Wycinanie kształtów</h3>
+          <p>Ozdoby, zawieszki i figurki wycinane laserem w dowolnym kształcie, jaki podeślesz.</p>
+        </article>
+
+        <article class="card reveal">
+          <span class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 40 40"><rect x="7" y="10" width="26" height="20" class="ic-frame"/><line x1="12" y1="17" x2="28" y2="17" class="ic-line"/><line x1="12" y1="22" x2="22" y2="22" class="ic-line"/></svg>
+          </span>
+          <h3>Personalizacja</h3>
+          <p>Imię, data, cytat albo własny projekt graficzny — każdy egzemplarz przygotowuję indywidualnie.</p>
+        </article>
+
+        <article class="card reveal">
+          <span class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="14" class="ic-frame"/><line x1="20" y1="9" x2="20" y2="14" class="ic-line"/><line x1="20" y1="26" x2="20" y2="31" class="ic-line"/><line x1="9" y1="20" x2="14" y2="20" class="ic-line"/><line x1="26" y1="20" x2="31" y2="20" class="ic-line"/></svg>
+          </span>
+          <h3>Materiał (cięcie)</h3>
+          <p>Sklejka o grubości 3mm.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PORTFOLIO ============ -->
+  <section class="section section-alt" id="portfolio">
+    <div class="section-inner">
+      <div class="section-head reveal">
+        <p class="eyebrow">Portfolio</p>
+        <h2>Wybrane realizacje</h2>
+        <p class="section-lead">Pełną ofertę znajdziesz na Facebook. <em>Poniżej przykładowe projekty.</em></p>
+      </div>
+
+      <div class="filter-bar reveal" role="tablist" aria-label="Filtruj portfolio">
+        <button class="filter-btn is-active" data-filter="all" role="tab" aria-selected="true" type="button">Wszystkie</button>
+        <button class="filter-btn" data-filter="gift-boxy" role="tab" aria-selected="false" type="button">Gift boxy</button>
+        <button class="filter-btn" data-filter="ozdoby" role="tab" aria-selected="false" type="button">Ozdoby</button>
+        <button class="filter-btn" data-filter="prezenty" role="tab" aria-selected="false" type="button">Prezenty</button>
+        <button class="filter-btn" data-filter="grawer-na-różnych-materiałach" role="tab" aria-selected="false" type="button">Grawer na różnych materiałach</button>
+      </div>
+
+      <div class="portfolio-grid" id="portfolioGrid">
+
+        <button class="portfolio-card reveal" data-category="gift-boxy" data-featured type="button" aria-label="Powiększ:  Gift box 1">
+  <span class="portfolio-media">
+    <img src="618211660_4358511501027360_6387302213891310079_n.jpg" alt="Gift box z grawerem i otwieraną górną częścią">
+  </span>
+  <span class="portfolio-caption">
+    <span class="portfolio-title">Gift box z grawerem i otwieraną górną częścią</span>
+    <span class="portfolio-tag">Gift boxy</span>
+  </span>
+</button>
+
+<button class="portfolio-card reveal" data-category="gift-boxy" type="button" aria-label="Powiększ: Gift box 2">
+  <span class="portfolio-media">
+    <img src="619390638_4358511931027317_2195977323601612492_n.jpg" alt="Gift box z grawerem i otwieraną górną częścią">
+  </span>
+  <span class="portfolio-caption">
+    <span class="portfolio-title">Gift box z grawerem i otwieraną górną częścią</span>
+    <span class="portfolio-tag">Gift boxy</span>
+  </span>
+</button>
+
+<button class="portfolio-card reveal" data-category="gift-boxy" type="button" aria-label="Powiększ: Gift box 3">
+  <span class="portfolio-media">
+    <img src="619265185_4358511994360644_2107349491393310486_n.jpg" alt="Gift box z otwieranym wieczkiem">
+  </span>
+  <span class="portfolio-caption">
+    <span class="portfolio-title">Gift box z otwieranym wieczkiem</span>
+    <span class="portfolio-tag">Gift boxy</span>
+  </span>
+</button>
+
+<button class="portfolio-card reveal" data-category="gift-boxy" type="button" aria-label="Powiększ: Gift box 3">
+  <span class="portfolio-media">
+    <img src="618141542_4358512221027288_7422115982440255906_n.jpg" alt="Gift box z otwieranym wieczkiem">
+  </span>
+  <span class="portfolio-caption">
+    <span class="portfolio-title">Gift box z otwieranym wieczkiem</span>
+    <span class="portfolio-tag">Gift boxy</span>
+  </span>
+</button>
+
+<button class="portfolio-card reveal" data-category="gift-boxy" type="button" aria-label="Powiększ: Gift box 3">
+  <span class="portfolio-media">
+    <img src="619799572_4360641504147693_9030025748277449121_n.jpg" alt="Gift box z otwieranym wieczkiem">
+  </span>
+  <span class="portfolio-caption">
+    <span class="portfolio-title">Otwierany gift box</span>
+    <span class="portfolio-tag">Gift boxy</span>
+  </span>
+</button>
+
+<button class="portfolio-card reveal" data-category="gift-boxy" type="button" aria-label="Powiększ: Gift box 3">
+  <span class="portfolio-media">
+    <img src="622844884_4360641744147669_7352568017070307237_n.jpg" alt="Gift box z otwieranym wieczkiem">
+  </span>
+  <span class="portfolio-caption">
+    <span class="portfolio-title">Otwierany gift box</span>
+    <span class="portfolio-tag">Gift boxy</span>
+  </span>
+</button>
+
+<button class="portfolio-card reveal" data-category="ozdoby" data-featured type="button" aria-label="Powiększ: Ozdoba ścienna">
+  <span class="portfolio-media">
+    <img src="539082518_4215539751991203_558492488169214368_n.jpg" alt="Ozdoba ścienna">
+  </span>
+  <span class="portfolio-caption">
+    <span class="portfolio-title">Ozdoba ścienna</span>
+    <span class="portfolio-tag">Ozdoby</span>
+  </span>
+</button>
+
+<button class="portfolio-card reveal" data-category="ozdoby" type="button" aria-label="Powiększ: Ozdoba ścienna">
+  <span class="portfolio-media">
+    <img src="540943973_4221986184679893_1957094721207938320_n.jpg" alt="Ozdoba ścienna">
+  </span>
+  <span class="portfolio-caption">
+    <span class="portfolio-title">Ozdoba ścienna</span>
+    <span class="portfolio-tag">Ozdoby</span>
+  </span>
+</button>
+
+        <button class="portfolio-card reveal" data-category="ozdoby" type="button" aria-label="Powiększ: Ozdoba wielkanocna">
+          <span class="portfolio-media">
+            <img src="646388077_4399192483625928_3759108300446008600_n.jpg" alt="Ozdoba wielkanocna">
+          </span>
+          <span class="portfolio-caption">
+            <span class="portfolio-title">Ozdoba wielkanocna</span>
+            <span class="portfolio-tag">Ozdoby</span>
+          </span>
+        </button>
+
+        <button class="portfolio-card reveal" data-category="ozdoby" type="button" aria-label="Powiększ: Ozdoba wielkanocna">
+          <span class="portfolio-media">
+            <img src="646462768_4399192423625934_4579913590531129952_n.jpg" alt="Ozdoba wielkanocna">
+          </span>
+          <span class="portfolio-caption">
+            <span class="portfolio-title">Ozdoba wielkanocna</span>
+            <span class="portfolio-tag">Ozdoby</span>
+          </span>
+        </button>
+
+        <button class="portfolio-card reveal" data-category="ozdoby" type="button" aria-label="Powiększ: Ozdoba na halloween">
+          <span class="portfolio-media">
+            <img src="547485826_4235298946681950_7466229627803396199_n.jpg" alt="Ozdoba na halloween">
+          </span>
+          <span class="portfolio-caption">
+            <span class="portfolio-title">Ozdoba na halloween</span>
+            <span class="portfolio-tag">Ozdoby</span>
+          </span>
+        </button>
+
+        <button class="portfolio-card reveal" data-category="ozdoby" type="button" aria-label="Powiększ: Ozdoba na halloween">
+          <span class="portfolio-media">
+            <img src="535044341_4209269302618248_5228574093882406268_n.jpg" alt="Ozdoba na halloween">
+          </span>
+          <span class="portfolio-caption">
+            <span class="portfolio-title">Ozdoba na halloween</span>
+            <span class="portfolio-tag">Ozdoby</span>
+          </span>
+        </button>
+
+        <button class="portfolio-card reveal" data-category="ozdoby" type="button" aria-label="Powiększ: Bombki choinkowe">
+          <span class="portfolio-media">
+            <img src="590236877_4308765412668636_5930977737155445871_n.jpg" alt="Bombki choinkowe">
+          </span>
+          <span class="portfolio-caption">
+            <span class="portfolio-title">Bombki choinkowe</span>
+            <span class="portfolio-tag">Ozdoby</span>
+          </span>
+        </button>
+
+        <button class="portfolio-card reveal" data-category="prezenty" data-featured type="button" aria-label="Powiększ: Prezenty">
+  <span class="portfolio-media">
+    <img src="517010853_4171530833058762_6461175111976737764_n.jpg" alt="Dzień Matki">
+  </span>
+  <span class="portfolio-caption">
+    <span class="portfolio-title">Dzień Matki</span>
+    <span class="portfolio-tag">Prezenty</span>
+  </span>
+</button>
+
+  <button class="portfolio-card reveal" data-category="prezenty" type="button" aria-label="Powiększ: Prezenty">
+  <span class="portfolio-media">
+    <img src="517338857_4171529329725579_5333447249456370317_n.jpg" alt="Dzień Matki">
+  </span>
+  <span class="portfolio-caption">
+    <span class="portfolio-title">Dzień Matki</span>
+    <span class="portfolio-tag">Prezenty</span>
+  </span>
+</button>
+
+<button class="portfolio-card reveal" data-category="prezenty" type="button" aria-label="Powiększ: Prezenty">
+  <span class="portfolio-media">
+    <img src="517982460_4171531159725396_4973277376684599269_n.jpg" alt="Dzień Ojca">
+  </span>
+  <span class="portfolio-caption">
+    <span class="portfolio-title">Dzień Ojca</span>
+    <span class="portfolio-tag">Prezenty</span>
+  </span>
+</button>
+
+<button class="portfolio-card reveal" data-category="prezenty" type="button" aria-label="Powiększ: Prezenty">
+  <span class="portfolio-media">
+    <img src="516657815_4171529109725601_9014807689237280516_n.jpg" alt="Pierwsza Komunia Święta">
+  </span>
+  <span class="portfolio-caption">
+    <span class="portfolio-title">Pierwsza Komunia Święta</span>
+    <span class="portfolio-tag">Prezenty</span>
+  </span>
+</button>
+
+<button class="portfolio-card reveal" data-category="prezenty" type="button" aria-label="Powiększ: Prezenty">
+  <span class="portfolio-media">
+    <img src="517486601_4171530416392137_1905745714862223536_n.jpg" alt="Pierwsza Komunia Święta">
+  </span>
+  <span class="portfolio-caption">
+    <span class="portfolio-title">Pierwsza Komunia Święta</span>
+    <span class="portfolio-tag">Prezenty</span>
+  </span>
+</button>
+
+<button class="portfolio-card reveal" data-category="prezenty" type="button" aria-label="Powiększ: Prezenty">
+  <span class="portfolio-media">
+    <img src="571335641_4278423205702857_7258905223509927470_n.jpg" alt="Świąteczny bon podarunkowy">
+  </span>
+  <span class="portfolio-caption">
+    <span class="portfolio-title">Świąteczny bon podarunkowy z szufladką na pieniądze</span>
+    <span class="portfolio-tag">Prezenty</span>
+  </span>
+</button>
+
+       <button class="portfolio-card reveal" data-category="grawer-na-różnych-materiałach" data-featured type="button" aria-label="Powiększ: Grawer na różnych materiałach">
+  <span class="portfolio-media">
+    <img src="515727896_4171529733058872_6567534799272137548_n.jpg" alt="Szkło">
+  </span>
+  <span class="portfolio-caption">
+    <span class="portfolio-title">Szkło</span>
+    <span class="portfolio-tag">Grawer na różnych materiałach</span>
+  </span>
+</button>
+
+<button class="portfolio-card reveal" data-category="grawer-na-różnych-materiałach" type="button" aria-label="Powiększ: Grawer na różnych materiałach">
+  <span class="portfolio-media">
+    <img src="IMG_20260425_202710_652.jpg" alt="Obudowa telefonu">
+  </span>
+  <span class="portfolio-caption">
+    <span class="portfolio-title">Obudowa telefonu</span>
+    <span class="portfolio-tag">Grawer na różnych materiałach</span>
+  </span>
+</button>
+
+<button class="portfolio-card reveal" data-category="grawer-na-różnych-materiałach" type="button" aria-label="Powiększ: Grawer na różnych materiałach">
+  <span class="portfolio-media">
+    <img src="IMG_20250611_102455.jpg" alt="Grawer na termosie">
+  </span>
+  <span class="portfolio-caption">
+    <span class="portfolio-title">Grawer na termosie</span>
+    <span class="portfolio-tag">Grawer na różnych materiałach</span>
+  </span>
+</button>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ JAK TO DZIAŁA ============ -->
+  <section class="section" id="jak-to-dziala">
+    <div class="section-inner">
+      <div class="section-head reveal">
+        <p class="eyebrow">Jak to działa</p>
+        <h2>Trzy kroki do gotowego przedmiotu</h2>
+      </div>
+
+      <ol class="steps">
+        <li class="step reveal">
+          <span class="step-num">01</span>
+          <h3>Wybierz albo napisz z pomysłem</h3>
+          <p>Przeglądasz gotowe produkty albo piszesz do mnie z własnym pomysłem na personalizację.</p>
+        </li>
+        <li class="step reveal">
+          <span class="step-num">02</span>
+          <h3>Ustalamy szczegóły</h3>
+          <p>Dobieramy materiał, rozmiar i wzór. Przed realizacją wysyłam wizualizację do akceptacji.</p>
+        </li>
+        <li class="step reveal">
+          <span class="step-num">03</span>
+          <h3>Wypalam i graweruję</h3>
+          <p>Po zaakceptowaniu projektu, zaczynam jego realizację.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ KONTAKT ============ -->
+  <section class="section section-alt" id="kontakt">
+    <div class="section-inner">
+      <div class="section-head reveal">
+        <p class="eyebrow">Kontakt</p>
+        <h2>Masz pomysł na personalizowany prezent?</h2>
+        <p class="section-lead">Napisz, chętnie pomogę go zrealizować.</p>
+      </div>
+
+      <div class="contact-grid">
+        <a class="contact-card reveal" href="mailto:kontakt@laserownia.pl">
+          <span class="contact-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" class="ic-line-thin"/><path d="M3 6 L12 13 L21 6" class="ic-line-thin"/></svg></span>
+          <span class="contact-label">Email</span>
+          <span class="contact-value">laserowe-wypalanie.rw@protonmail.com</span>
+        </a>
+
+        <a class="contact-card reveal" href="tel:+48123456789">
+          <span class="contact-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4 h4 l2 5 -2.5 1.5 a12 12 0 0 0 6 6 l1.5 -2.5 5 2 v4 a2 2 0 0 1 -2.2 2 A16 16 0 0 1 3 6.2 A2 2 0 0 1 5 4 Z" class="ic-line-thin"/></svg></span>
+          <span class="contact-label">Telefon</span>
+          <span class="contact-label">WhatsApp</span>
+          <span class="contact-value">+48 797 186 183</span>
+        </a>
+
+        <div class="contact-card">
+          <span class="contact-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21 C8 17 4.5 13.4 4.5 9.5 a7.5 7.5 0 0 1 15 0 C19.5 13.4 16 17 12 21 Z" class="ic-line-thin"/><circle cx="12" cy="9.5" r="2.6" class="ic-line-thin"/></svg></span>
+          <span class="contact-label">Lokalizacja</span>
+          <span class="contact-value">Częstochowa, Polska</span>
         </div>
-    </section>
 
-    <!-- O mnie / Usługi -->
-    <section id="o-mnie" class="py-20 bg-white dark:bg-gray-800 transition-colors">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold mb-4">Co mogę dla Ciebie stworzyć?</h2>
-                <div class="h-1 w-20 bg-wood mx-auto rounded"></div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Karta 1 -->
-                <div class="bg-gray-50 dark:bg-gray-700 p-8 rounded-2xl text-center hover-scale">
-                    <div class="w-16 h-16 bg-wood/10 text-wood rounded-full flex items-center justify-center text-2xl mx-auto mb-6">
-                        <i class="fa-solid fa-fire"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Wypalanie Laserowe</h3>
-                    <p class="text-gray-600 dark:text-gray-300">Precyzyjne wycinanie skomplikowanych kształtów w sklejce, drewnie i innych materiałach.</p>
-                </div>
-                <!-- Karta 2 -->
-                <div class="bg-gray-50 dark:bg-gray-700 p-8 rounded-2xl text-center hover-scale">
-                    <div class="w-16 h-16 bg-wood/10 text-wood rounded-full flex items-center justify-center text-2xl mx-auto mb-6">
-                        <i class="fa-solid fa-pen-nib"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Grawerowanie</h3>
-                    <p class="text-gray-600 dark:text-gray-300">Personalizowane dedykacje, logotypy firmowe i portrety grawerowane bezpośrednio na drewnie.</p>
-                </div>
-                <!-- Karta 3 -->
-                <div class="bg-gray-50 dark:bg-gray-700 p-8 rounded-2xl text-center hover-scale">
-                    <div class="w-16 h-16 bg-wood/10 text-wood rounded-full flex items-center justify-center text-2xl mx-auto mb-6">
-                        <i class="fa-solid fa-gift"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Projekty na wymiar</h3>
-                    <p class="text-gray-600 dark:text-gray-300">Realizuję indywidualne zamówienia i pomysły klientów od projektu po gotowy produkt.</p>
-                </div>
-            </div>
+        <div class="contact-card contact-card-social">
+          <span class="contact-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.6" class="ic-line-thin"/><circle cx="6" cy="12" r="2.6" class="ic-line-thin"/><circle cx="18" cy="19" r="2.6" class="ic-line-thin"/><line x1="8.3" y1="10.7" x2="15.7" y2="6.3" class="ic-line-thin"/><line x1="8.3" y1="13.3" x2="15.7" y2="17.7" class="ic-line-thin"/></svg></span>
+          <span class="contact-label">Social media</span>
+          <div class="social-links">
+               <a href="#" class="pill-link">Facebook</a>
+          </div>
         </div>
-    </section>
+      </div>
 
-    <!-- Portfolio -->
-    <section id="portfolio" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div class="text-center mb-16">
-            <h2 class="text-3xl font-bold mb-4">Moje Realizacje</h2>
-            <div class="h-1 w-20 bg-wood mx-auto rounded mb-6"></div>
-            <p class="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">Zobacz wybrane projekty, które opuściły moją pracownię. Wszystkie te rzeczy (oraz wiele więcej) znajdziesz na moim koncie Allegro.</p>
+      <div class="allegro-banner reveal">
+        <div class="allegro-banner-text">
+          <p class="eyebrow"></p>
+          <h3>Zobacz pełną ofertę.
+          <p>Więcej zdjęć produktów znajdziesz na stronie na Facebook.</p>
         </div>
+        <a href="https://www.facebook.com/profile.php?id=61592488697568" target="_blank" rel="noopener" class="btn btn-accent btn-lg">Przejdź do Facebook</a>
+      </div>
+    </div>
+  </section>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Projekt 1 -->
-            <div class="group relative overflow-hidden rounded-2xl hover-scale bg-white dark:bg-gray-800 shadow-sm">
-                <img src="https://placehold.co/600x400/292524/e7e5e4?text=Zdjecie+Projektu+1" alt="Projekt 1" class="w-full h-64 object-cover transition duration-300 group-hover:scale-110">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                    <h3 class="text-white font-bold text-xl">Podkładka pod kubek</h3>
-                    <p class="text-gray-200 text-sm">Grawerowana sklejka 3mm</p>
-                </div>
-            </div>
-            
-            <!-- Projekt 2 -->
-            <div class="group relative overflow-hidden rounded-2xl hover-scale bg-white dark:bg-gray-800 shadow-sm">
-                <img src="https://placehold.co/600x400/292524/e7e5e4?text=Zdjecie+Projektu+2" alt="Projekt 2" class="w-full h-64 object-cover transition duration-300 group-hover:scale-110">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                    <h3 class="text-white font-bold text-xl">Pudełko na wino</h3>
-                    <p class="text-gray-200 text-sm">Personalizowany grawer ślubny</p>
-                </div>
-            </div>
+</main>
 
-            <!-- Projekt 3 -->
-            <div class="group relative overflow-hidden rounded-2xl hover-scale bg-white dark:bg-gray-800 shadow-sm">
-                <img src="https://placehold.co/600x400/292524/e7e5e4?text=Zdjecie+Projektu+3" alt="Projekt 3" class="w-full h-64 object-cover transition duration-300 group-hover:scale-110">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                    <h3 class="text-white font-bold text-xl">Zegar ścienny</h3>
-                    <p class="text-gray-200 text-sm">Drewno dębowe z ażurowym wzorem</p>
-                </div>
-            </div>
+<!-- ============ STOPKA ============ -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="brand-name">RadoWood</span>
+      <p>Wypalane i grawerowane laserem z uwagą na detal.</p>
+    </div>
 
-            <!-- Projekt 4 -->
-            <div class="group relative overflow-hidden rounded-2xl hover-scale bg-white dark:bg-gray-800 shadow-sm">
-                <img src="https://placehold.co/600x400/292524/e7e5e4?text=Zdjecie+Projektu+4" alt="Projekt 4" class="w-full h-64 object-cover transition duration-300 group-hover:scale-110">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                    <h3 class="text-white font-bold text-xl">Statuetka okolicznościowa</h3>
-                    <p class="text-gray-200 text-sm">Cięcie i grawerowanie</p>
-                </div>
-            </div>
+    <nav class="footer-links" aria-label="Menu w stopce">
+      <a href="#o-pracowni">O pracowni</a>
+      <a href="#portfolio">Portfolio</a>
+      <a href="#jak-to-dziala">Jak to działa</a>
+      <a href="#kontakt">Kontakt</a>
+      <a href="https://www.facebook.com/profile.php?id=61592488697568" target="_blank" rel="noopener">Facebook</a>
+    </nav>
 
-            <!-- Projekt 5 -->
-            <div class="group relative overflow-hidden rounded-2xl hover-scale bg-white dark:bg-gray-800 shadow-sm">
-                <img src="https://placehold.co/600x400/292524/e7e5e4?text=Zdjecie+Projektu+5" alt="Projekt 5" class="w-full h-64 object-cover transition duration-300 group-hover:scale-110">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                    <h3 class="text-white font-bold text-xl">Ozdoby świąteczne</h3>
-                    <p class="text-gray-200 text-sm">Zestaw bombek drewnianych</p>
-                </div>
-            </div>
+    <div class="footer-meta">
+      <p>© <span id="year">2026</span> Laserownia. Wszystkie prawa zastrzeżone.</p>
+      <p class="footer-note">Strona nie wysyła żadnych formularzy ani danych — kontakt odbywa się bezpośrednio mailowo, telefonicznie lub przez Facebook.</p>
+    </div>
+  </div>
+</footer>
 
-            <!-- Projekt 6 -->
-            <div class="group relative overflow-hidden rounded-2xl hover-scale bg-white dark:bg-gray-800 shadow-sm">
-                <img src="https://placehold.co/600x400/292524/e7e5e4?text=Zdjecie+Projektu+6" alt="Projekt 6" class="w-full h-64 object-cover transition duration-300 group-hover:scale-110">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                    <h3 class="text-white font-bold text-xl">Breloki do kluczy</h3>
-                    <p class="text-gray-200 text-sm">Z logo firmy klienta</p>
-                </div>
-            </div>
-        </div>
-        
-        <div class="mt-12 text-center">
-            <a href="https://allegro.pl/uzytkownik/TWÓJ_LOGIN" target="_blank" class="inline-flex items-center gap-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-6 py-3 rounded-full font-bold transition-colors">
-                Zobacz pełną ofertę na Allegro <i class="fa-solid fa-arrow-right"></i>
-            </a>
-        </div>
-    </section>
+<button id="backToTop" class="back-to-top" type="button" aria-label="Wróć na górę strony">
+  <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+</button>
 
-    <!-- Kontakt & Footer -->
-    <footer id="kontakt" class="bg-gray-900 text-white pt-16 pb-8 border-t-4 border-wood">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-12">
-                
-                <!-- O firmie -->
-                <div>
-                    <div class="flex items-center gap-2 mb-6">
-                        <i class="fa-solid fa-tree text-wood text-2xl"></i>
-                        <span class="font-bold text-xl tracking-tight">Laser<span class="text-wood">Wood</span></span>
-                    </div>
-                    <p class="text-gray-400 mb-6">
-                        Twoje pomysły wypalone w drewnie. Zajmuję się realizacją gotowych wzorów oraz indywidualnych projektów na zamówienie.
-                    </p>
-                </div>
+<!-- ============ LIGHTBOX ============ -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Podgląd realizacji" hidden>
+  <div class="lightbox-backdrop" data-close></div>
+  <div class="lightbox-panel">
+    <button class="lightbox-close" data-close type="button" aria-label="Zamknij podgląd">✕</button>
+    <div class="lightbox-media" id="lightboxMedia"></div>
+    <p class="lightbox-title" id="lightboxTitle"></p>
+  </div>
+</div>
 
-                <!-- Dane kontaktowe -->
-                <div>
-                    <h3 class="text-xl font-bold mb-6">Kontakt</h3>
-                    <ul class="space-y-4 text-gray-400">
-                        <li class="flex items-center gap-3">
-                            <i class="fa-solid fa-envelope text-wood"></i>
-                            <a href="mailto:kontakt@twojadomena.pl" class="hover:text-white transition-colors">kontakt@twojadomena.pl</a>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fa-solid fa-phone text-wood"></i>
-                            <a href="tel:+48123456789" class="hover:text-white transition-colors">+48 123 456 789</a>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fa-solid fa-location-dot text-wood"></i>
-                            <span>Warszawa, Polska (Wysyłka na cały kraj)</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Allegro i Social Media -->
-                <div>
-                    <h3 class="text-xl font-bold mb-6">Gdzie kupić?</h3>
-                    <p class="text-gray-400 mb-4">Wszystkie moje produkty znajdziesz i bezpiecznie kupisz na Allegro.</p>
-                    <a href="https://allegro.pl/uzytkownik/TWÓJ_LOGIN" target="_blank" class="bg-allegro hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-bold transition-colors inline-flex items-center gap-2 w-full justify-center mb-6">
-                        <i class="fa-solid fa-cart-shopping"></i> Mój Sklep Allegro
-                    </a>
-                    
-                    <div class="flex gap-4">
-                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
-                            <i class="fa-brands fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-pink-600 transition-colors">
-                            <i class="fa-brands fa-instagram"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
-                <p>&copy; <span id="year"></span> RadoWood. Wszelkie prawa zastrzeżone.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Skrypty operacyjne (Dark mode, Menu) -->
-    <script>
-        // Aktualizacja roku w stopce
-        document.getElementById('year').textContent = new Date().getFullYear();
-
-        // Obsługa trybu ciemnego (ikony)
-        const themeToggleBtn = document.getElementById('theme-toggle');
-        const themeToggleMobileBtn = document.getElementById('theme-toggle-mobile');
-        const darkIcon = document.getElementById('theme-toggle-dark-icon');
-        const lightIcon = document.getElementById('theme-toggle-light-icon');
-
-        function updateIcons() {
-            if (document.documentElement.classList.contains('dark')) {
-                darkIcon.classList.remove('hidden');
-                lightIcon.classList.add('hidden');
-            } else {
-                lightIcon.classList.remove('hidden');
-                darkIcon.classList.add('hidden');
-            }
-        }
-        updateIcons();
-
-        function toggleTheme() {
-            if (document.documentElement.classList.contains('dark')) {
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem('color-theme', 'light');
-            } else {
-                document.documentElement.classList.add('dark');
-                localStorage.setItem('color-theme', 'dark');
-            }
-            updateIcons();
-        }
-
-        themeToggleBtn.addEventListener('click', toggleTheme);
-        themeToggleMobileBtn.addEventListener('click', toggleTheme);
-
-        // Obsługa menu mobilnego
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // Ukryj menu mobilne po kliknięciu w link
-        const mobileLinks = mobileMenu.querySelectorAll('a');
-        mobileLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-            });
-        });
-    </script>
+<script src="script.js"></script>
 </body>
 </html>

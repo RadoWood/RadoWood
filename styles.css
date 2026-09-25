@@ -1,7 +1,5 @@
 /* =========================================================
-   LASEROWNIA — style.css
-   Motyw: "laserowe cięcie" — fazowane (ścięte) rogi zamiast
-   zaokrągleń, linia grawerunku jako akcent, ciepłe drewno + żar lasera.
+   RADOWOOD — style.css
    ========================================================= */
 
 /* ---------- Reset ---------- */
@@ -20,8 +18,8 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   --surface-2: #ECE6D8;
   --text: #241C16;
   --text-muted: #6E6252;
-  --accent: #2563EB;       /* żar lasera / ember */
-  --accent-2: #0EA5E9;     /* czerwona kropka celownika */
+  --accent: #2563EB;
+  --accent-2: #0EA5E9;
   --wood: #B08752;
   --line: rgba(36,28,22,0.12);
   --shadow: 0 18px 40px -18px rgba(36,28,22,0.28);
@@ -108,10 +106,8 @@ h3 { font-size: 1.15rem; }
 
 /* ---------- Header ---------- */
 .site-header{
-  position: sticky; top: 0; z-index: 100;
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: var(--bg);
   border-bottom: 1px solid var(--line);
 }
 .nav-inner{
@@ -159,7 +155,7 @@ h3 { font-size: 1.15rem; }
 .menu-toggle svg{ stroke: var(--text); stroke-width: 2; }
 
 /* ---------- Hero ---------- */
-.hero{ padding-top: clamp(2.6rem, 6vw, 4.5rem); overflow: hidden; }
+.hero{ padding-top: calc(64px + clamp(2.6rem, 6vw, 4.5rem)); overflow: hidden; }
 .hero-inner{
   max-width: var(--container); margin: 0 auto;
   padding-inline: clamp(20px, 5vw, 56px);
@@ -173,7 +169,19 @@ h3 { font-size: 1.15rem; }
   font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.03em;
   color: var(--text-muted); border-top: 1px dashed var(--line); padding-top: 1rem;
 }
-.hero-visual{ width: 100%; aspect-ratio: 1/1; }
+.hero-visual{
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1/1;
+  overflow: hidden;
+  clip-path: polygon(var(--chamfer-lg) 0, 100% 0, 100% calc(100% - var(--chamfer-lg)), calc(100% - var(--chamfer-lg)) 100%, 0 100%, 0 var(--chamfer-lg));
+}
+.hero-photo{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 
 #ridgePath{
   stroke-dasharray: 392; stroke-dashoffset: 392;
@@ -242,8 +250,9 @@ h3 { font-size: 1.15rem; }
 }
 .portfolio-card:hover{ transform: translateY(-4px); box-shadow: var(--shadow); }
 .portfolio-card.is-hidden{ display: none; }
-.portfolio-media{ position: relative; display: block; background: var(--surface-2); overflow: hidden; }
+.portfolio-media{ position: relative; display: block; background: var(--surface-2); overflow: hidden; aspect-ratio: 4 / 3; }
 .portfolio-media svg{ width: 100%; height: auto; padding: 1.4rem; }
+.portfolio-media img{ width: 100%; height: 100%; object-fit: cover; }
 .p-frame{ fill: none; stroke: var(--wood); stroke-width: 2; }
 .p-thin{ fill: none; stroke: var(--accent); stroke-width: 1.6; stroke-linecap: round; }
 .p-thick{ fill: none; stroke: var(--accent); stroke-width: 3.5; stroke-linecap: round; }
@@ -328,7 +337,7 @@ a.contact-card:hover{ transform: translateY(-3px); border-color: var(--accent); 
 /* ---------- Lightbox ---------- */
 .lightbox{ position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 5vh 5vw; }
 .lightbox[hidden]{ display: none; }
-.lightbox-backdrop{ position: absolute; inset: 0; background: rgba(15,11,8,0.72); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+.lightbox-backdrop{ position: absolute; inset: 0; background: rgba(15,11,8,0.72); }
 .lightbox-panel{
   position: relative; background: var(--surface); max-width: 480px; width: 100%;
   padding: 2.2rem 2rem 1.6rem; text-align: center;
@@ -348,6 +357,11 @@ a.contact-card:hover{ transform: translateY(-3px); border-color: var(--accent); 
 .reveal{ opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s ease; }
 .reveal.is-visible{ opacity: 1; transform: translateY(0); }
 
+/* ---------- Obrót zdjęcia ---------- */
+.obrot{
+  transform: rotate(90deg);
+}
+
 /* ---------- Responsive ---------- */
 @media (max-width: 900px){
   .hero-inner{ grid-template-columns: 1fr; }
@@ -357,9 +371,10 @@ a.contact-card:hover{ transform: translateY(-3px); border-color: var(--accent); 
 
 @media (max-width: 760px){
   .nav-links{
-    position: fixed; inset: 64px 0 0 0; z-index: 99;
-    background: var(--surface); border-top: 1px solid var(--line);
-    box-shadow: var(--shadow);
+    position: fixed; top: 64px; left: 0; right: 0; bottom: 0; z-index: 150;
+    background: var(--surface);
+    box-shadow: 0 16px 32px -12px rgba(0,0,0,0.35);
+    border-top: 1px solid var(--line);
     flex-direction: column; align-items: flex-start; gap: 0;
     padding: 1rem clamp(20px,5vw,56px) 2rem;
     transform: translateY(-8px); opacity: 0; visibility: hidden;
@@ -386,19 +401,4 @@ a.contact-card:hover{ transform: translateY(-3px); border-color: var(--accent); 
     scroll-behavior: auto !important;
   }
   .reveal{ opacity: 1; transform: none; }
-}
-
-.obrot{
-  transform: rotate(90deg);
-}
-
-/* Wymuszenie nieprzezroczystego tła menu mobilnego */
-@media (max-width: 760px){
-  .nav-links{
-    background: var(--surface) !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    box-shadow: 0 16px 32px -12px rgba(0,0,0,0.35) !important;
-    z-index: 150 !important;
-  }
 }
